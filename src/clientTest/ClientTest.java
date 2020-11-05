@@ -15,15 +15,18 @@ public class ClientTest {
      
          userInterface.UserInterface userInterface = new userInterface.UserInterface();
          multiThreadedClient.MultiThreadedClient client = new multiThreadedClient.MultiThreadedClient();
-         clientCommandHandler.ClientCommandHandler clientHandler = new  clientCommandHandler.ClientCommandHandler(client,userInterface);
+         serverCommandHandler.ServerCommandHandler ServerHandler = new serverCommandHandler.ServerCommandHandler(client,userInterface);
+         clientCommandHandler.ClientCommandHandler clientHandler = new  clientCommandHandler.ClientCommandHandler(client,userInterface,ServerHandler);
          userInterface.SetClientHandler(clientHandler);
           
          
          userInterface.Display("d:\tDisconnect\n"
                 + "t:\tTime\n"
-                + "c:\tConnect\n");
+                + "c:\tConnect\n"
+                + "q:\tQuit\n");
              Thread myUIthread = new Thread(userInterface);
            myUIthread.start();
+           
          //  clientHandler.HandlerUserCommand(input);
      }
 }

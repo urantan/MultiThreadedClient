@@ -29,6 +29,7 @@ public class UserInterface implements Runnable {
     }
     public void run() {
 
+        while(true){
         String input = "no input";
 
         try {
@@ -36,10 +37,13 @@ public class UserInterface implements Runnable {
             //   return input;
         } catch (IOException e) {
             System.err.print("No standard Input, exitting the program");
-            System.exit(0);
+            System.exit(0); 
         }
+        
+        
         // return input;
         commandHandler.HandlerUserCommand(input);
+        }
     }
 
     public void Display(String input) {
