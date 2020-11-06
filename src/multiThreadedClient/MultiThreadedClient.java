@@ -15,16 +15,22 @@ import java.net.Socket;
  *
  * @author Ngozi Francis Uranta
  */
-public class MultiThreadedClient {
+public class MultiThreadedClient implements Runnable {
 
     Socket socket;
     InputStream in;
     OutputStream out;
     boolean CheckConnected;
+    serverCommandHandler.ServerCommandHandler handler;
+    multiThreadedClient.MultiThreadedClient client;
+    userInterface.UserInterface UserInterface;
 
-    public MultiThreadedClient() {
+    public MultiThreadedClient(userInterface.UserInterface UserInterface) {
         in = null;
         out = null;
+        this.UserInterface = UserInterface;
+        handler = new serverCommandHandler.ServerCommandHandler(this);
+        //client = this;
     }
 
     public boolean StartServer(String host, int PortNum) {
@@ -38,6 +44,7 @@ public class MultiThreadedClient {
             in = socket.getInputStream();
             out = socket.getOutputStream();
             result = true;
+            
         } catch (IOException e) {
             System.err.println("Cannot Connect to Server");
             result = false;
@@ -45,6 +52,20 @@ public class MultiThreadedClient {
         CheckConnected = result;
         return result;
     }
+    
+     public boolean makeConnection(){
+      boolean result = false;
+    if (!CheckConnected){
+      StartServer("localhost",5555);
+      Thread clithread = new Thread(this);
+      clithread.start();
+      result = true;
+    }
+    else{
+      SendMsgToUi("Client connected");
+    result = false;}
+    return result;
+  }
 
     public void StopServer() {
         try {
@@ -85,22 +106,32 @@ public class MultiThreadedClient {
                 value = (byte) in.read();
             } catch (IOException i) {
                 System.err.println("Client disconnected");
-            } 
+            }
         }
-         return value;
+        return value;
     }
-    
-     public void disconnect() {
-    try {
-      CheckConnected = false;
-      socket.close();
-      this.in = null;
-      this.out = null;
-      
-    } catch (Exception e) {
-      System.err.println("Cannot close stream/client socket; exiting.");
-      System.exit(1);
-    }
-  }
 
+    public void disconnect() {
+        try {
+            CheckConnected = false;
+            socket.close();
+            this.in = null;
+            this.out = null;
+
+        } catch (Exception e) {
+            System.err.println("Cannot close stream/client socket; exiting.");
+            System.exit(1);
+        }
+    }
+
+    @Override
+    public void run() {
+        if (CheckConnected) {
+            handler.execute();
+        }
+    }
+
+    public void SendMsgToUi(String input) {
+        UserInterface.Display(input);
+    }
 }

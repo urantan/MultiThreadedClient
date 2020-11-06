@@ -27,6 +27,7 @@ public class UserInterface implements Runnable {
     public void SetClientHandler(clientCommandHandler.ClientCommandHandler commandHandler){
         this.commandHandler = commandHandler;
     }
+    @Override
     public void run() {
 
         while(true){

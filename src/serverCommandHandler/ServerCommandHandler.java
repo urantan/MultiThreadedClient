@@ -11,18 +11,20 @@ import java.util.ArrayList;
  *
  * @author Ngozi Francis Uranta
  */
-public class ServerCommandHandler {
+public class ServerCommandHandler  {
+    
+  //  userInterface.UserInterface UserInterface;
     multiThreadedClient.MultiThreadedClient MultiThreadedClient;
-    userInterface.UserInterface UserInterface;
-    public ServerCommandHandler( multiThreadedClient.MultiThreadedClient MultiThreadedClient,userInterface.UserInterface UserInterface){
+    public ServerCommandHandler(multiThreadedClient.MultiThreadedClient MultiThreadedClient){
+      
         this.MultiThreadedClient = MultiThreadedClient;
-        this.UserInterface = UserInterface;
     }
     
+   
     public void execute(){
         String ToPrint = " ";
         if (MultiThreadedClient.SendMsg((byte) 't')) {
-                        UserInterface.Display("Waiting to recieve time");
+                        MultiThreadedClient.SendMsgToUi("Waiting to recieve time");
 
                         var arrayList = new ArrayList<String>();
 
@@ -43,9 +45,9 @@ public class ServerCommandHandler {
                                 ToPrint += arrayList.get(i);
                             }
                         }
-                        UserInterface.Display(ToPrint);
+                       MultiThreadedClient.SendMsgToUi(ToPrint);
                     } else {
-                        UserInterface.Display("Msg not sent successfully");
+                        MultiThreadedClient.SendMsgToUi("Msg not sent successfully");
                     }
     
     }

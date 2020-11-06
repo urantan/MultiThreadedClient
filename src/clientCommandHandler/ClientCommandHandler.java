@@ -14,10 +14,9 @@ public class ClientCommandHandler {
     multiThreadedClient.MultiThreadedClient ThreadedClient;
     userInterface.UserInterface userInterface;
     serverCommandHandler.ServerCommandHandler serverHandler;
-    public ClientCommandHandler(multiThreadedClient.MultiThreadedClient ThreadedClient,userInterface.UserInterface userInterface,serverCommandHandler.ServerCommandHandler serverHandler) {
+    public ClientCommandHandler(multiThreadedClient.MultiThreadedClient ThreadedClient,userInterface.UserInterface userInterface) {
         this.ThreadedClient = ThreadedClient;
         this.userInterface = userInterface;
-        this.serverHandler = serverHandler;
     }
     
     
@@ -34,7 +33,7 @@ public class ClientCommandHandler {
                 }
                 break;
             case "c":
-               if(ThreadedClient.StartServer("localhost", 5555)){
+               if(ThreadedClient.makeConnection()){
                    userInterface.Display("The  client has connected successfully");
                }
                else{
@@ -42,10 +41,7 @@ public class ClientCommandHandler {
                }
                 break;
             case "t":
-                 if(ThreadedClient.SendMsg((byte) 't')){
-                     serverHandler.execute();
-                 
-                 }
+                 ThreadedClient.SendMsg((byte) 't');
                 break;
             case "q":
                 if(ThreadedClient.SendMsg((byte) 'q')){
